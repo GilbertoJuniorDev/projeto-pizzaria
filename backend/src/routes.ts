@@ -13,7 +13,8 @@ import { ListByCategoryController } from "./controllers/product/ListByCategoryCo
 import { CreateNewOrderController } from "./controllers/order/CreateNewOrderController";
 
 import uploadConfig from "./config/multer";
-import { DeleteOrderController } from "./controllers/order/DeleteOrderController";
+import { RemoveOrderController } from "./controllers/order/RemoveOrderController";
+import { AddItemController } from "./controllers/order/AddItemController";
 
 const router = Router();
 
@@ -41,7 +42,11 @@ router.get(
   isAuthorized,
   new ListByCategoryController().handle
 );
+// ----------------
 //-- Rotas Orders
 router.post("/order", isAuthorized, new CreateNewOrderController().handle);
-router.delete("/order", isAuthorized, new DeleteOrderController().handle);
+router.delete("/order", isAuthorized, new RemoveOrderController().handle);
+
+router.post("order/add", isAuthorized, new AddItemController().handle);
+// ----------------
 export { router };
