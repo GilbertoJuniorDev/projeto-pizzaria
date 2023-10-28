@@ -47,6 +47,6 @@ router.get(
 router.post("/order", isAuthorized, new CreateNewOrderController().handle);
 router.delete("/order", isAuthorized, new RemoveOrderController().handle);
 
-router.post("order/add", isAuthorized, new AddItemController().handle);
+router.post("/order/add", isAuthorized, new AddItemController().handle);
 // ----------------
 export { router };
