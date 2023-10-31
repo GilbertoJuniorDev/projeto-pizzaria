@@ -15,6 +15,7 @@ import { CreateNewOrderController } from "./controllers/order/CreateNewOrderCont
 import uploadConfig from "./config/multer";
 import { RemoveOrderController } from "./controllers/order/RemoveOrderController";
 import { AddItemController } from "./controllers/order/AddItemController";
+import { RemoveItemController } from "./controllers/order/RemoveItemController";
 
 const router = Router();
 
@@ -48,5 +49,7 @@ router.post("/order", isAuthorized, new CreateNewOrderController().handle);
 router.delete("/order", isAuthorized, new RemoveOrderController().handle);
 
 router.post("/order/add", isAuthorized, new AddItemController().handle);
+router.delete("/order/remove", isAuthorized, new RemoveItemController().handle);
+
 // ----------------
 export { router };
