@@ -1,24 +1,34 @@
 import { useState } from "react"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
-
+import api from "../lib/api"
+import { useRouter } from "next/router"
 export default function Login() {
 
     const [showPassword, setShowPassword] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [rememberMe, setRememberMe] = useState(false)
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
 
-        // Simulate API call
-        setTimeout(() => {
+        try {
+            const response = await api.post('/session', { email, password })
+            localStorage.setItem('token', response.data.token)
+            router.push('/sucesso');
+        } catch (err) {
+            setError("Erro ao fazer o Login, senha ou email incorreto")
+            alert(err)
+
+        } finally {
             setIsLoading(false)
-            // Handle login logic here
-            console.log("Login attempt with:", { email, password, rememberMe })
-        }, 1500)
+
+        }
+
     }
 
     return (
@@ -63,7 +73,7 @@ export default function Login() {
                                         Password
                                     </label>
                                     <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-500">
-                                        Forgot password?
+                                        Esqueceu a senha?
                                     </a>
                                 </div>
                                 <div className="relative">
@@ -102,7 +112,7 @@ export default function Login() {
                                     onChange={(e) => setRememberMe(e.target.checked)}
                                 />
                                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                                    Remember me
+                                    Lembre de mim
                                 </label>
                             </div>
                         </div>
@@ -113,7 +123,7 @@ export default function Login() {
                                 disabled={isLoading}
                                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {isLoading ? "Signing in..." : "Sign in"}
+                                {isLoading ? "Carregando" : "Login"}
                             </button>
                         </div>
                     </form>
@@ -121,9 +131,9 @@ export default function Login() {
 
                 <div className="text-center mt-4">
                     <p className="text-sm text-gray-600">
-                        Don't have an account?{" "}
+                        Não possui uma conta?{" "}
                         <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                            Sign up
+                            Solicite uma conta
                         </a>
                     </p>
                 </div>
